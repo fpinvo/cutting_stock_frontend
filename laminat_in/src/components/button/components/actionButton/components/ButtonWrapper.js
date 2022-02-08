@@ -4,7 +4,7 @@ export const ButtonWrapper = styled.button`
   ${({ theme }) => css`
     padding: ${(p) => (p.big ? "8px 16px" : "4px 16px")};
     font-size: 14px;
-    border-radius: ${(p) => (p.buttonType === "text" ? "" : "60px")};
+    border-radius: ${(p) => (p.buttonType === "text" ? "" : "7px")};
     outline: none;
     position: relative;
     overflow: hidden;
@@ -30,7 +30,7 @@ export const ButtonWrapper = styled.button`
     ${(p) =>
       p.buttonType === "outlined" &&
       css`
-        border: 1px solid ${p.borderColor ? p.borderColor : "#E3E3E3"};
+        border: 1px solid ${p.borderColor ? p.borderColor : "grey"};
         color: ${theme?.colour?.secondary ?? "#04333B"};
         font-weight: 400;
         display: flex;

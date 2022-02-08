@@ -5,8 +5,15 @@ import { ImageWrapper } from "../../../wrappers/ImageWrapper";
 import { SelectWrapper } from "../../../wrappers/SelectWrapper";
 
 function Selectc(props) {
-  const { options, handleSheetChange } = props;
+  const { options, handleSheetChange, columnWidth } = props;
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const customStyles = {
+    menu: (provided, state) => ({
+      ...provided,
+      zIndex: 100,
+    }),
+  };
 
   const handleChange = (change) => {
     handleSheetChange(change);
@@ -15,7 +22,8 @@ function Selectc(props) {
 
   return (
     <Select
-      className={"ml-0 col-lg-4 pr-0 pl-2 mr-2"}
+      className={`ml-0 pr-0 pl-2 mr-2 ${columnWidth}`}
+      styles={customStyles}
       value={selectedOption}
       options={options}
       onChange={handleChange}

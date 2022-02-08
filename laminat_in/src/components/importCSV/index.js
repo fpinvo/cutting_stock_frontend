@@ -5,6 +5,7 @@ import ImportAsSvg from "../../utils/importAsSVG";
 import $ from "jquery";
 
 function ImportCSV(props) {
+  const { setData } = props;
   const [csvFile, setCsvFile] = useState();
   const [csvArray, setCsvArray] = useState([]);
 
@@ -46,6 +47,7 @@ function ImportCSV(props) {
     });
 
     setCsvArray(newArray);
+    setData(newArray);
   };
 
   return (

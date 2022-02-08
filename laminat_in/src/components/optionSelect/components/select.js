@@ -5,7 +5,7 @@ import { ImageWrapper } from "../../../wrappers/ImageWrapper";
 import { SelectWrapper } from "../../../wrappers/SelectWrapper";
 
 function OptionSelect(props) {
-  const { options, handleSelectedChange } = props;
+  const { options, handleSelectedChange, columnWidth } = props;
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   const customStyles = {
@@ -13,6 +13,7 @@ function OptionSelect(props) {
       ...provided,
       width: "16em",
       borderBottom: "1px dotted pink",
+      zIndex: 100,
     }),
   };
 
@@ -23,7 +24,7 @@ function OptionSelect(props) {
 
   return (
     <Select
-      className={"ml-2 mr-2 pl-0 pr-0 col-sm-3"}
+      className={`ml-2 mr-2 pl-0 pr-0 ${columnWidth}`}
       styles={customStyles}
       placeholder={""}
       value={selectedOption}

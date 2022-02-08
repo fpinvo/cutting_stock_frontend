@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../../components";
 import { TopBarWrapper } from "../../wrappers/TopBarWrapper";
 import CalculatorSvg from "../../utils/calculatorSVG";
@@ -10,12 +10,14 @@ import { CSVLink, CSVDownload } from "react-csv";
 import ImportCSV from "../../components/importCSV";
 
 function TopContainer(props) {
-  const [csvData, setCsvData] = useState([
-    ["firstname", "lastname", "email"],
-    ["John", "Doe", "john.doe@xyz.com"],
-    ["Jane", "Doe", "jane.doe@xyz.com"],
-  ]);
+  const { data, setData } = props;
+
+  const [csvData, setCsvData] = useState([]);
   const date = new Date(Date.now()).toLocaleString().split(",")[0];
+
+  useEffect(() => {
+    setCsvData(data);
+  }, [data]);
 
   return (
     <TopBarWrapper>
@@ -27,9 +29,9 @@ function TopContainer(props) {
         big
       />
 
-      <ImportCSV />
+      <ImportCSV setData={setData} />
 
-      <CSVLink data={csvData} filename={date + ".csv"}>
+      <CSVLink data={data} filename={date + ".csv"}>
         <Button
           title=" Save Project"
           icon={<DocumentSvg color={"black"} />}
