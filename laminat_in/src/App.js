@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Laminat_app from "./Laminat_app";
+import ShapesContainer from "./Laminat_app/atoms/shapesContainer";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Laminat_app />} exact></Route>
+          <Route path="/diagram" element={<ShapesContainer />} exact></Route>
         </Routes>
       </BrowserRouter>
     </React.Fragment>

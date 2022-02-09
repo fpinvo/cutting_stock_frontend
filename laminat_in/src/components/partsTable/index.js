@@ -13,6 +13,7 @@ function PartsTable(props) {
     setSelectedRowData,
     selectedImage,
     selectedRotation,
+    selectedRotationValue,
     callTheSelectAll,
     callDeleteSelected,
     callClearTable,
@@ -138,29 +139,17 @@ function PartsTable(props) {
                       ...newData,
                       id: tableData.length + 1,
                       img: selectedImage || "",
-                      rotation:
-                        selectedRotation == 0
-                          ? "Rotate"
-                          : selectedRotation == 1
-                          ? "Do not Rotate"
-                          : "Joint rotation" || "",
-                      rotID: selectedRotation || 0,
+                      rotation: selectedRotationValue || "Do not Rotate",
+                      rotID: selectedRotation || 1,
                     };
-                    console.log("njk: ", newData);
 
                     setTableData([...data, newData]);
                   } else {
                     const dataCopy = [...data];
                     const index = dataCopy.indexOf(oldData);
                     newData.img = selectedImage || newData.img;
-                    newData.rotation =
-                      selectedRotation == 0
-                        ? "Rotate"
-                        : selectedRotation == 1
-                        ? "Do not Rotate"
-                        : "Joint rotation" || "";
-                    console.log("njk: ", newData);
-                    newData.rotID = selectedRotation || 0;
+                    newData.rotation = selectedRotationValue || "Do not Rotate";
+                    newData.rotID = selectedRotation || 1;
                     dataCopy[index] = newData;
                     setTableData(dataCopy);
                   }

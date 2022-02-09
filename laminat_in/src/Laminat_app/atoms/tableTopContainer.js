@@ -11,7 +11,8 @@ import { SelectWrapper } from "../../wrappers/SelectWrapper";
 import { TableTopWrapper } from "../../wrappers/TableTopWrapper";
 
 function TableTopContainer(props) {
-  const { setFinalData, dataStore, setTheData } = props;
+  const { setFinalData, dataStore, setTheData, freshStore, setRefreshStore } =
+    props;
 
   const [data, setData] = useState([
     {
@@ -62,11 +63,14 @@ function TableTopContainer(props) {
 
   const handleSheetOptionSelected = (option) => {
     let td = tableData;
-    selectedRow[0] &&
-      (td[td.findIndex((item) => item.id == selectedRow[0].id)].img =
-        option.img);
+    if (selectedRow[0]) {
+      td[td.findIndex((item) => item.id == selectedRow[0].id)].img = option.img;
+      td[td.findIndex((item) => item.id == selectedRow[0].id)].type =
+        option.value;
+    }
     setTableData(td);
     setSheetImage(option.img);
+    setRefreshStore(freshStore + 1);
   };
 
   const handleSortingOptionSelected = (option) => {

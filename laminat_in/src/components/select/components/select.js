@@ -29,12 +29,15 @@ function Selectc(props) {
       onChange={handleChange}
       formatOptionLabel={(item) => (
         <SelectWrapper>
-          <ImageWrapper
-            src={item.img}
-            width={"20px"}
-            height={"20px"}
-            round={true}
-          />
+          {item.icon && <span className="mr-2">{item.icon}</span>}
+          {item.img && (
+            <ImageWrapper
+              src={item.img}
+              width={"20px"}
+              height={"20px"}
+              round={true}
+            />
+          )}
           <span>{item.value}</span>
         </SelectWrapper>
       )}

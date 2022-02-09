@@ -10,7 +10,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 import ImportCSV from "../../components/importCSV";
 
 function TopContainer(props) {
-  const { data, setData } = props;
+  const { data, setData, dataForSheets, dataForParts } = props;
 
   const [csvData, setCsvData] = useState([]);
   const date = new Date(Date.now()).toLocaleString().split(",")[0];
@@ -19,13 +19,47 @@ function TopContainer(props) {
     setCsvData(data);
   }, [data]);
 
+  const shapeData = () => {
+    let finalSheetData = [];
+    let finalPartsData = [];
+    dataForSheets.forEach((el, k) => {
+      let cuts = [];
+      dataForParts.forEach((el2, j) => {
+        if (el.type == el2.type) {
+          let i = 0;
+          while (i < el2.quantity) {
+            cuts.push([el2.width, el2.lengthi]);
+            i++;
+          }
+        }
+      });
+      //cuts = cuts.join(",");
+      finalSheetData.push({
+        marterial_name: el.type,
+        x_axis: el.width,
+        y_axis: el.lengthi,
+        quantity: el.quantity,
+        cuts: cuts,
+      });
+    });
+
+    console.log("final data: ", finalSheetData, finalPartsData);
+    //generateShapes();
+  };
+
+  const generateShapes = (data) => {
+    window.location.href = "/diagram";
+  };
+
   return (
     <TopBarWrapper>
       <Button
         title=" Run Calculation"
         icon={<CalculatorSvg color={"black"} />}
         type="outlined"
-        onClick={() => {}}
+        onClick={() => {
+          shapeData();
+        }}
         big
       />
 
