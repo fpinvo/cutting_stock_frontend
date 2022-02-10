@@ -33,6 +33,7 @@ const initialRectangles = [
 export const DiagramBuilder = () => {
   const [rectangles, setRectangles] = React.useState(initialRectangles);
   const [selectedId, selectShape] = React.useState(null);
+  const layerref = React.useRef(null);
 
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
@@ -66,6 +67,15 @@ export const DiagramBuilder = () => {
     );
   }
 
+  function haveIntersection(r1, r2) {
+    return !(
+      r2.x > r1.x + r1.width ||
+      r2.x + r2.width < r1.x ||
+      r2.y > r1.y + r1.height ||
+      r2.y + r2.height < r1.y
+    );
+  }
+
   return (
     <Stage
       width={gridWidth}
@@ -83,7 +93,28 @@ export const DiagramBuilder = () => {
         {linesB}
       </Layer>
       {/* <Layer>{gridComponents}</Layer> */}
-      <Layer>
+      <Layer
+        ref={layerref}
+        onDragMove={(e) => {
+          //console.log("dd: ", layerref);
+          var target = e.target;
+          console.log("njkn: ", target);
+          var targetRect = e.target.getClientRect();
+          layerref.current.children.forEach(function (group) {
+            // do not check intersection with itself
+            if (group === target) {
+              return;
+            }
+            if (haveIntersection(group.getClientRect(), targetRect)) {
+              //console.log("collided: ", group, targetRect);
+              //group.findOne(".fillShape").fill("red");
+            } else {
+              //console.log("not collided: ", group);
+              //group.findOne(".fillShape").fill("grey");
+            }
+          });
+        }}
+      >
         {rectangles.map((rect, i) => {
           return (
             <Rectangle

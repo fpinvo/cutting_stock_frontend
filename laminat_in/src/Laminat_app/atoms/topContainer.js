@@ -8,6 +8,7 @@ import { LogoSvg } from "../../utils/LogoSVG";
 import TotalSvg from "../../utils/totalSVG";
 import { CSVLink, CSVDownload } from "react-csv";
 import ImportCSV from "../../components/importCSV";
+import axios from "axios";
 
 function TopContainer(props) {
   const { data, setData, dataForSheets, dataForParts } = props;
@@ -43,12 +44,15 @@ function TopContainer(props) {
       });
     });
 
-    console.log("final data: ", finalSheetData, finalPartsData);
-    //generateShapes();
+    //console.log("final data: ", finalSheetData);
+    generateShapes(finalSheetData);
   };
 
-  const generateShapes = (data) => {
-    window.location.href = "/diagram";
+  const generateShapes = async (data) => {
+    // console.log("data: ", data);
+    const backendData = await axios.post("/add", data);
+    console.log("backend data: ", backendData);
+    //window.location.href = "/diagram";
   };
 
   return (

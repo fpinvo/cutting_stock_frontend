@@ -17,6 +17,29 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
 
   let axis = {};
 
+  function degToRad(angle) {
+    //console.log("njkj: ", angle);
+    return (angle / 180) * Math.PI;
+  }
+
+  function RadToDeg(rad) {
+    return (180 / Math.PI) * rad;
+  }
+
+  function getSnapRotation(rotation) {
+    //console.log("mmk: ", rotation);
+    if (rotation >= 45 && rotation < 135) {
+      return 90;
+    } else if (rotation >= 135 && rotation < 225) {
+      return 180;
+    } else if (rotation >= 225 && rotation < 305) {
+      return 90;
+    } else {
+      return 180;
+    }
+  }
+
+  let axisForRotation = {};
   return (
     <React.Fragment>
       <Rect
@@ -29,25 +52,29 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
           axis = { x: e.target.x(), y: e.target.y() };
         }}
         onDragEnd={(e) => {
-          //   e.target.to(
-          //     Math.round(e.target.x() / grid) * grid > 400 ||
-          //       Math.round(e.target.y() / grid) * grid > 350 ||
-          //       Math.round(e.target.y() / grid) * grid < 0 ||
-          //       Math.round(e.target.x() / grid) * grid < 0
-          //       ? {
-          //           x: axis.x,
-          //           y: axis.y,
-          //         }
-          //       : {
-          //           x: Math.round(e.target.x() / grid) * grid,
-          //           y: Math.round(e.target.y() / grid) * grid,
-          //         }
-          //   );
+          e.target.to(
+            Math.round(e.target.x() / grid) * grid > 400 ||
+              Math.round(e.target.y() / grid) * grid > 350 ||
+              Math.round(e.target.y() / grid) * grid < 0 ||
+              Math.round(e.target.x() / grid) * grid < 0
+              ? {
+                  x: axis.x,
+                  y: axis.y,
+                }
+              : {
+                  x: Math.round(e.target.x() / grid) * grid,
+                  y: Math.round(e.target.y() / grid) * grid,
+                }
+          );
           //   onChange({
           //     ...shapeProps,
           //     x: e.target.x(),
           //     y: e.target.y(),
           //   });
+        }}
+        onTransformStart={(e) => {
+          console.log("e: ", e.target._lastPos);
+          axisForRotation = e.target._lastPos;
         }}
         onTransformEnd={(e) => {
           // transformer is changing scale of the node
@@ -59,18 +86,36 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
           const scaleY = node.scaleY();
 
           // we will reset it back
+
+          node.rotation(getSnapRotation(Math.abs(node.attrs.rotation)));
           node.scaleX(1);
           node.scaleY(1);
           onChange({
             ...shapeProps,
-            x: node.x(),
-            y: node.y(),
+            x: e.target.x(),
+            y: e.target.y(),
             // set minimal value
             //width: Math.max(5, node.width() * scaleX),
             //height: Math.max(node.height() * scaleY),
             width: node.width(),
             height: node.height(),
           });
+          e.target.to(
+            Math.round(e.target.x() / grid) * grid > 400 ||
+              Math.round(e.target.y() / grid) * grid > 350 ||
+              Math.round(e.target.y() / grid) * grid < 0 ||
+              Math.round(e.target.x() / grid) * grid < 0
+              ? {
+                  x: axis.x,
+                  y: axis.y,
+                }
+              : {
+                  x: Math.round(e.target.x() / grid) * grid,
+                  y: Math.round(e.target.y() / grid) * grid,
+                }
+          );
+
+          console.log("kn: ", shapeProps, e);
         }}
       />
       {isSelected && (
@@ -78,10 +123,22 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
           ref={trRef}
           boundBoxFunc={(oldBox, newBox) => {
             // limit resize
+            // const closesSnap = getSnapRotation(newBox.rotation);
+            // const diff = closesSnap - oldBox.rotation;
+
+            // if (Math.abs(diff) > 0) {
+            //   return rotateAroundCenter(oldBox, diff);
+            // }
+
             if (newBox.width < 5 || newBox.height < 5) {
+              // console.log("old: ", oldBox, newBox.width, newBox.height);
               return oldBox;
             }
+            //console.log("new box: ", oldBox, newBox);
+
             return newBox;
+
+            // return oldBoundBox;
           }}
         />
       )}
