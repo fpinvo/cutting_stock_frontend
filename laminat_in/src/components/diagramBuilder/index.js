@@ -95,12 +95,15 @@ export const DiagramBuilder = () => {
       {/* <Layer>{gridComponents}</Layer> */}
       <Layer
         ref={layerref}
+        onDragStart={(e) => {
+          console.log("n: ", e);
+        }}
         onDragMove={(e) => {
           //console.log("dd: ", layerref);
           var target = e.target;
-          console.log("njkn: ", target);
+          //console.log("njkn: ", target);
           var targetRect = e.target.getClientRect();
-          layerref.current.children.forEach(function (group) {
+          layerref.current.children.forEach((group, i) => {
             // do not check intersection with itself
             if (group === target) {
               return;

@@ -31,11 +31,11 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
     if (rotation >= 45 && rotation < 135) {
       return 90;
     } else if (rotation >= 135 && rotation < 225) {
-      return 180;
+      return 0;
     } else if (rotation >= 225 && rotation < 305) {
       return 90;
     } else {
-      return 180;
+      return 0;
     }
   }
 
@@ -49,6 +49,7 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
         {...shapeProps}
         draggable
         onDragStart={(e) => {
+          //console.log("yfyg: ", e);
           axis = { x: e.target.x(), y: e.target.y() };
         }}
         onDragEnd={(e) => {
@@ -73,7 +74,7 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
           //   });
         }}
         onTransformStart={(e) => {
-          console.log("e: ", e.target._lastPos);
+          //console.log("e: ", e.target._lastPos);
           axisForRotation = e.target._lastPos;
         }}
         onTransformEnd={(e) => {
@@ -94,9 +95,6 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
             ...shapeProps,
             x: e.target.x(),
             y: e.target.y(),
-            // set minimal value
-            //width: Math.max(5, node.width() * scaleX),
-            //height: Math.max(node.height() * scaleY),
             width: node.width(),
             height: node.height(),
           });
@@ -114,31 +112,16 @@ export const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
                   y: Math.round(e.target.y() / grid) * grid,
                 }
           );
-
-          console.log("kn: ", shapeProps, e);
         }}
       />
       {isSelected && (
         <Transformer
           ref={trRef}
           boundBoxFunc={(oldBox, newBox) => {
-            // limit resize
-            // const closesSnap = getSnapRotation(newBox.rotation);
-            // const diff = closesSnap - oldBox.rotation;
-
-            // if (Math.abs(diff) > 0) {
-            //   return rotateAroundCenter(oldBox, diff);
-            // }
-
             if (newBox.width < 5 || newBox.height < 5) {
-              // console.log("old: ", oldBox, newBox.width, newBox.height);
               return oldBox;
             }
-            //console.log("new box: ", oldBox, newBox);
-
             return newBox;
-
-            // return oldBoundBox;
           }}
         />
       )}

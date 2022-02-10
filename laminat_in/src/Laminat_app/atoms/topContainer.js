@@ -44,15 +44,14 @@ function TopContainer(props) {
       });
     });
 
-    //console.log("final data: ", finalSheetData);
     generateShapes(finalSheetData);
   };
 
   const generateShapes = async (data) => {
     // console.log("data: ", data);
-    const backendData = await axios.post("/add", data);
-    console.log("backend data: ", backendData);
-    //window.location.href = "/diagram";
+    // const backendData = await axios.post("/add", data);
+    // console.log("backend data: ", backendData);
+    window.location.href = "/diagram";
   };
 
   return (
